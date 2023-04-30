@@ -13,6 +13,6 @@ import by.babanin.todo.model.Todo;
 @Repository
 public interface TodoRepository extends IndexableRepository<Todo, Long> {
 
-    @Query("select t from todos t where t.priority in :priorities")
+    @Query("select t from todo t where t.priority in :priorities")
     List<Todo> findAllByPriorities(@Param("priorities") Collection<Priority> priorities);
 }

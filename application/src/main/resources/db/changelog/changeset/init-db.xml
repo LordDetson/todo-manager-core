@@ -1,0 +1,67 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+        http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Dmitry Babanin" id="create-priority-sequence">
+        <createSequence sequenceName="PRIORITY_SEQ" />
+    </changeSet>
+    <changeSet author="Dmitry Babanin" id="create-todo-sequence">
+        <createSequence sequenceName="TODO_SEQ" />
+    </changeSet>
+    <changeSet author="Dmitry Babanin" id="create-priorities-table">
+        <createTable tableName="PRIORITY">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="priority-id-pk" />
+            </column>
+            <column name="NAME" type="VARCHAR(16)">
+                <constraints nullable="false" />
+            </column>
+            <column name="POSITION" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Dmitry Babanin" id="create-todos-table">
+        <createTable tableName="TODO">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="todo-id-pk" />
+            </column>
+            <column name="TITLE" type="VARCHAR(32)">
+                <constraints nullable="false" />
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(1024)" />
+            <column name="PRIORITY_ID" type="BIGINT" />
+            <column name="STATUS" type="SMALLINT">
+                <constraints nullable="false" />
+            </column>
+            <column name="CREATION_DATE" type="date">
+                <constraints nullable="false" />
+            </column>
+            <column name="PLANNED_DATE" type="date">
+                <constraints nullable="false" />
+            </column>
+            <column name="COMPLETION_DATE" type="date" />
+            <column name="POSITION" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Dmitry Babanin" id="add-unique-priority-name-constraint">
+        <addUniqueConstraint columnNames="NAME" constraintName="unique-priority-name" tableName="PRIORITY" />
+    </changeSet>
+    <changeSet author="Dmitry Babanin" id="create-priority-id-index">
+        <createIndex indexName="priority-id" tableName="TODO">
+            <column name="PRIORITY_ID" />
+        </createIndex>
+    </changeSet>
+    <changeSet author="Dmitry Babanin" id="add-priority-id-fk">
+        <addForeignKeyConstraint baseColumnNames="PRIORITY_ID" baseTableName="TODO" constraintName="todo-priority" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
+                                 referencedTableName="PRIORITY" validate="true" />
+    </changeSet>
+</databaseChangeLog>
