@@ -17,6 +17,8 @@
             **/repository/**/*,
             **/aspect/**/*
         </sonar.coverage.exclusions>
+        <liquibase-hibernate5.version>4.21.1</liquibase-hibernate5.version>
+        <liquibase.spring.version>5.3.26</liquibase.spring.version>
     </properties>
 
     <dependencies>
@@ -50,6 +52,10 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
         </dependency>
     </dependencies>
 
@@ -86,10 +92,72 @@
                                 <ignoredUnusedDeclaredDependency>org.springframework*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.projectlombok:lombok</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>com.h2database:h2</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.liquibase:liquibase-core</ignoredUnusedDeclaredDependency>
                             </ignoredUnusedDeclaredDependencies>
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>check-db-and-changelogs</id>
+                        <goals>
+                            <goal>validate</goal>
+                            <goal>updateSQL</goal>
+                            <goal>dbDoc</goal>
+                            <goal>diff</goal>
+                        </goals>
+                        <phase>process-test-classes</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <propertyFile>liquibase.properties</propertyFile>
+                    <outputChangeLogFile>${project.build.directory}/liquibase/output-changelog.xml</outputChangeLogFile>
+                    <diffChangeLogFile>${project.build.directory}/liquibase/diff-changelog.xml</diffChangeLogFile>
+                    <systemProperties>
+                        <user.name>liquibase</user.name>
+                    </systemProperties>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.liquibase.ext</groupId>
+                        <artifactId>liquibase-hibernate5</artifactId>
+                        <version>${liquibase-hibernate5.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-test</artifactId>
+                        <version>${liquibase.spring.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-jdbc</artifactId>
+                        <version>${liquibase.spring.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-beans</artifactId>
+                        <version>${liquibase.spring.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-context</artifactId>
+                        <version>${liquibase.spring.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-orm</artifactId>
+                        <version>${liquibase.spring.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>jakarta.persistence</groupId>
+                        <artifactId>jakarta.persistence-api</artifactId>
+                        <version>${jakarta-persistence.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
