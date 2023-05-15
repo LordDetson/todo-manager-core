@@ -40,7 +40,6 @@ public class Priority implements Persistent<Long>, Indexable {
     Long id;
 
     @Column(unique = true, nullable = false, length = 16)
-    @ReportableField(index = 0, mandatory = true)
     @NonNull
     String name;
 
