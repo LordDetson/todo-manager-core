@@ -34,17 +34,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>jar</id>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                        <configuration>
-                            <mainClass>by.babanin.todo.DataGenerationLauncher</mainClass>
-                        </configuration>
-                    </execution>
-                </executions>
+                <configuration>
+                    <mainClass>by.babanin.todo.DataGenerationLauncher</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>
