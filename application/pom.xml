@@ -108,6 +108,12 @@
                             <goal>validate</goal>
                             <goal>updateSQL</goal>
                             <goal>dbDoc</goal>
+                            <!--
+                            The diff goal has the issue (https://github.com/liquibase/liquibase-hibernate/issues/481):
+                            The problem of The application must supply JDBC connections occurs,
+                            but it creates the changelog normally.
+                            It's connected to Class [org.hibernate.boot.jaxb.hbm.spi.package-info] could not be found.
+                            -->
                             <goal>diff</goal>
                         </goals>
                         <phase>process-test-classes</phase>
